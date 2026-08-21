@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>RENZO PRO PROXY — Official 1.5-Hour VIP Trial Portal</title>
+  <meta name="description" content="Official high-speed VIP Trial Key generator for Renzo Pro Proxy with 100% Anti-Ban Bypass & King-Proxy Native Hook." />
+
+  <!-- Google Fonts: Outfit, JetBrains Mono, Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Firebase v9 Compat SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Interactive Cyber Particles Canvas Background -->
+  <canvas id="cyber-canvas"></canvas>
+
+  <!-- Glowing Radial Lights -->
+  <div class="glow-orb glow-top-right"></div>
+  <div class="glow-orb glow-bottom-left"></div>
+  <div class="glow-orb glow-center"></div>
+
+  <!-- App Wrapper -->
+  <div class="portal-wrapper">
+
+    <!-- Top Server Status Bar -->
+    <header class="top-nav">
+      <div class="brand-box">
+        <div class="logo-wrapper">
+          <img src="rpp_logo.jpg" alt="Renzo Pro Proxy Logo" class="brand-avatar" />
+          <div class="avatar-ring"></div>
+        </div>
+        <div>
+          <h1 class="brand-name">RENZO PRO PROXY</h1>
+          <div class="brand-sub">
+            <span class="badge-pulse"></span>
+            <span class="sub-text">OFFICIAL TRIAL GATEWAY • v2.0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="server-node-pill">
+        <i class="fa-solid fa-server node-icon"></i>
+        <div class="node-info">
+          <span class="node-title">ASIA CLOUD NODE #04</span>
+          <span id="live-user-counter" class="node-status">🟢 2,840+ Active Proxies</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main High-Tech Portal Card -->
+    <main class="cyber-card">
+
+      <!-- Header Section -->
+      <section class="card-hero">
+        <div class="hero-chip">
+          <i class="fa-solid fa-bolt-lightning chip-icon"></i>
+          <span>HIGH-SPEED VIP ACCESS</span>
+        </div>
+        <h2 class="hero-title">Claim <span class="gradient-orange">1.5-Hour VIP Key</span></h2>
+        <p class="hero-desc">100% Free Trial Key with 3D Avatar Assets, Anti-Ban Bypass & Shizuku Non-Root Support.</p>
+      </section>
+
+      <!-- Live Features Highlights Grid -->
+      <section class="cyber-features-grid">
+        <div class="feature-card">
+          <div class="feat-icon-box"><i class="fa-solid fa-shield-halved"></i></div>
+          <div class="feat-text">
+            <h4>Anti-Ban Bypass</h4>
+            <p>100% Anti-Cheat Disabled</p>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feat-icon-box"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+          <div class="feat-text">
+            <h4>3D Assets Mod</h4>
+            <p>Full 64 Avatar Bundles</p>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feat-icon-box"><i class="fa-solid fa-mobile-screen-button"></i></div>
+          <div class="feat-text">
+            <h4>1-Device Lock</h4>
+            <p>Single HWID Protected</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================== -->
+      <!-- STATE 1: INITIAL READY TO GENERATE -->
+      <!-- ==================================================== -->
+      <div id="state-ready" class="state-container">
+        <div class="trial-rules-box">
+          <i class="fa-solid fa-clock-rotate-left trial-icon"></i>
+          <div>
+            <strong>1.5 Hours Trial Policy:</strong>
+            <p>Each user/device is granted 1 key every 1.5 hours. Once generated, your key remains active for exactly 90 minutes.</p>
+          </div>
+        </div>
+
+        <button id="btn-start-gen" class="btn-cyber-generate" type="button">
+          <div class="btn-content">
+            <span class="btn-main-text"><i class="fa-solid fa-wand-magic-sparkles"></i> GENERATE 1.5-HOUR VIP KEY</span>
+            <span class="btn-sub-text">Runs 10s Realtime Device & Network Verification</span>
+          </div>
+          <div class="btn-glow-layer"></div>
+        </button>
+      </div>
+
+      <!-- ==================================================== -->
+      <!-- STATE 2: 10-SECOND HIGH-TECH RADAR & CONSOLE CHECK -->
+      <!-- ==================================================== -->
+      <div id="state-progress" class="state-container hidden">
+        <div class="scanning-wrapper">
+          <div class="cyber-radar">
+            <div class="radar-blade"></div>
+            <img src="rpp_logo.jpg" alt="Scanning..." class="radar-core-logo" />
+          </div>
+          <div class="countdown-ring">
+            <span id="countdown-sec-num">10</span><span class="unit">s</span>
+          </div>
+        </div>
+
+        <h3 id="scan-title" class="scan-heading">Scanning Device Integrity...</h3>
+
+        <!-- Multi-Step Console Log Box -->
+        <div class="cyber-terminal">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">SECURITY GATEWAY VERIFIER</span>
+          </div>
+          <div id="terminal-logs" class="terminal-body">
+            <div class="log-line active"><i class="fa-solid fa-angle-right"></i> <span id="current-log-text">Connecting to Renzo Cloud Load Balancer...</span></div>
+          </div>
+        </div>
+
+        <!-- High-Tech Progress Bar -->
+        <div class="cyber-progress-track">
+          <div id="cyber-progress-bar" class="cyber-progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- ==================================================== -->
+      <!-- STATE 3: ACTIVE KEY DISPLAY & LIVE COUNTDOWN -->
+      <!-- ==================================================== -->
+      <div id="state-active-key" class="state-container hidden">
+        <div class="active-badges-bar">
+          <span class="badge-active-live"><i class="fa-solid fa-circle-check"></i> VIP KEY ACTIVE (1.5H)</span>
+          <span class="badge-device-bound"><i class="fa-solid fa-lock"></i> Locked to 1 Device</span>
+        </div>
+
+        <!-- Neon Key Box -->
+        <div class="neon-key-box">
+          <div class="key-box-top">
+            <span class="key-tag-label"><i class="fa-solid fa-key"></i> YOUR UNIQUE VIP LICENSE KEY</span>
+            <span class="key-web-badge">WEB-GENERATED</span>
+          </div>
+          <div class="key-box-content">
+            <div id="active-key-text" class="key-code-display">WEB-XXXX-XXXX-XXXX</div>
+            <button id="btn-copy-code" class="btn-copy-action" type="button" title="Copy License Key">
+              <i class="fa-regular fa-copy"></i> <span>COPY</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Realtime Ticking Countdown Card -->
+        <div class="live-countdown-card">
+          <div class="countdown-left">
+            <i class="fa-solid fa-hourglass-half countdown-icon"></i>
+            <div>
+              <div class="countdown-label">TIME REMAINING</div>
+              <div class="countdown-sub">Key expires automatically</div>
+            </div>
+          </div>
+          <div id="live-timer-digits" class="countdown-clock">01:30:00</div>
+        </div>
+
+        <!-- Lock Warning Notice -->
+        <div class="lock-notice">
+          <i class="fa-solid fa-circle-exclamation text-orange"></i>
+          <span>New key can only be generated after this 1.5-hour session expires.</span>
+        </div>
+
+        <!-- 3-Step App Activation Guide -->
+        <div class="activation-steps-card">
+          <h4><i class="fa-solid fa-circle-play text-orange"></i> How to Use in Renzo Pro Proxy App:</h4>
+          <div class="steps-grid">
+            <div class="step-box">
+              <span class="step-num">1</span>
+              <p>Tap <strong>COPY</strong> on your key above.</p>
+            </div>
+            <div class="step-box">
+              <span class="step-num">2</span>
+              <p>Open <strong>Renzo Pro Proxy</strong> on your phone & paste key.</p>
+            </div>
+            <div class="step-box">
+              <span class="step-num">3</span>
+              <p>Tap <strong>START PROXY & PLAY</strong> to activate!</p>
+            </div>
+          </div>
+        </div>
+
+        <button id="btn-check-refresh" class="btn-refresh-session" type="button">
+          <i class="fa-solid fa-arrows-rotate"></i> REFRESH SESSION STATUS
+        </button>
+      </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="portal-footer">
+      <p>© 2026 RENZO PRO PROXY — All Rights Reserved.</p>
+      <div class="footer-pills">
+        <span><i class="fa-solid fa-shield-halved text-green"></i> 100% Anti-Ban</span>
+        <span><i class="fa-solid fa-bolt text-orange"></i> 0.2ms Cloud Gateway</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Dynamic Toast Feedback -->
+  <div id="cyber-toast" class="cyber-toast">
+    <i class="fa-solid fa-circle-check text-green"></i>
+    <span id="toast-msg-text">Key copied to clipboard!</span>
+  </div>
+
+  <!-- Main Portal Script -->
+  <script src="app.js"></script>
+</body>
+</html>
