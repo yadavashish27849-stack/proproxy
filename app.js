@@ -1,526 +1,500 @@
-/**
- * ==========================================================
- * RENZO PRO PROXY — BIG SERVER CYBER TRIAL PORTAL SCRIPT
- * Canvas Cyber Particles | 10s Multi-Step Console | 1.5H Lock
- * ==========================================================
- */
+/* =========================================================
+   MAX VIP 2026 - CRIMSON RED KEY GENERATOR ENGINE
+   ========================================================= */
 
-(function () {
-  'use strict';
+// --- TARGET VIP KEY CONSTANT ---
+const VIP_KEY = 'MAX-VIP#2026@PRO!';
+const COUNTDOWN_DURATION = 5000; // 5 seconds
 
-  // ==========================================
-  // 1. REALTIME FIREBASE CONFIGURATION
-  // ==========================================
-  const FIREBASE_CONFIG = {
-    apiKey: "AIzaSyAiYUF8AGSywwZcT7v97nZJkqXniZYWSSI",
-    authDomain: "proxy-2-d749a.firebaseapp.com",
-    databaseURL: "https://proxy-2-d749a-default-rtdb.firebaseio.com",
-    projectId: "proxy-2-d749a",
-    storageBucket: "proxy-2-d749a.firebasestorage.app",
-    messagingSenderId: "198043412525",
-    appId: "1:198043412525:web:f1679870bbce2adbd070a4",
-    measurementId: "G-MZFWQE8QCJ"
-  };
+// --- DOM ELEMENTS ---
+const idleState = document.getElementById('idleState');
+const generatingState = document.getElementById('generatingState');
+const revealedState = document.getElementById('revealedState');
 
-  let db = null;
-  let isFirebaseReady = false;
+const generateBtn = document.getElementById('generateBtn');
+const copyBtn = document.getElementById('copyBtn');
+const copyBtnText = document.getElementById('copyBtnText');
+const copyIcon = document.getElementById('copyIcon');
+const checkIcon = document.getElementById('checkIcon');
+const regenerateBtn = document.getElementById('regenerateBtn');
 
-  // Session Storage Keys (and Legacy Keys)
-  const STORAGE_KEY_ACTIVE_KEY = 'rpp_web_active_key_v2';
-  const STORAGE_KEY_EXPIRY = 'rpp_web_active_expiry_v2';
-  const STORAGE_KEY_CREATED = 'rpp_web_active_created_v2';
+const countdownSeconds = document.getElementById('countdownSeconds');
+const progressRingCircle = document.getElementById('progressRingCircle');
+const linearProgressBar = document.getElementById('linearProgressBar');
+const cipherScramble = document.getElementById('cipherScramble');
+const statusMessage = document.getElementById('statusMessage');
+const finalKeyText = document.getElementById('finalKeyText');
 
-  const ALL_STORAGE_KEYS = [
-    'rpp_web_active_key_v2',
-    'rpp_web_active_expiry_v2',
-    'rpp_web_active_created_v2',
-    'rpp_web_trial_active_key',
-    'rpp_web_trial_expiry_ts',
-    'rpp_web_trial_created_ts',
-    'rpp_web_active_trial_key',
-    'rpp_web_active_trial_expiry'
-  ];
+const card3d = document.getElementById('card3d');
+const cardWrapper = document.getElementById('cardWrapper');
+const toast = document.getElementById('toast');
 
-  function getStoredActiveKey() {
-    for (const k of ['rpp_web_active_key_v2', 'rpp_web_trial_active_key', 'rpp_web_active_trial_key']) {
-      const val = localStorage.getItem(k);
-      if (val && val.trim().length > 0) return val.trim();
-    }
-    return null;
-  }
+// --- BACKGROUND MUSIC & AUDIO CONTROLLER ---
+const bgMusic = document.getElementById('bgMusic');
+const musicToggle = document.getElementById('musicToggle');
+const musicStatusText = document.getElementById('musicStatusText');
 
-  function clearAllStoredTrialKeys() {
-    ALL_STORAGE_KEYS.forEach(k => {
-      try { localStorage.removeItem(k); } catch (e) {}
-    });
-  }
+let isMusicPlaying = false;
 
-  // Duration: 1.5 Hours in Milliseconds
-  const DURATION_1_5_HOURS_MS = 1.5 * 60 * 60 * 1000;
-
-  // Timers & Intervals
-  let countdownInterval = null;
-  let progressInterval = null;
-
-  // DOM Elements
-  const stateReady = document.getElementById('state-ready');
-  const stateProgress = document.getElementById('state-progress');
-  const stateActiveKey = document.getElementById('state-active-key');
-
-  const btnStartGen = document.getElementById('btn-start-gen');
-  const btnCopyCode = document.getElementById('btn-copy-code');
-  const btnCheckRefresh = document.getElementById('btn-check-refresh');
-
-  const activeKeyText = document.getElementById('active-key-text');
-  const liveTimerDigits = document.getElementById('live-timer-digits');
-
-  const cyberProgressBar = document.getElementById('cyber-progress-bar');
-  const countdownSecNum = document.getElementById('countdown-sec-num');
-  const scanTitle = document.getElementById('scan-title');
-  const currentLogText = document.getElementById('current-log-text');
-  const terminalLogs = document.getElementById('terminal-logs');
-
-  const liveUserCounter = document.getElementById('live-user-counter');
-  const cyberToast = document.getElementById('cyber-toast');
-  const toastMsgText = document.getElementById('toast-msg-text');
-
-  // ==========================================
-  // 2. APP INITIALIZATION
-  // ==========================================
-  document.addEventListener('DOMContentLoaded', () => {
-    initCyberCanvas();
-    initFirebase();
-    initLiveUserCounter();
-    initEventListeners();
-    checkExistingSession();
+// Configure loop and optimal volume
+if (bgMusic) {
+  bgMusic.loop = true;
+  bgMusic.volume = 0.9;
+  
+  // Continuous loop listener
+  bgMusic.addEventListener('ended', () => {
+    bgMusic.currentTime = 0;
+    bgMusic.play().catch(() => {});
   });
+}
 
-  function initFirebase() {
-    try {
-      if (typeof firebase !== 'undefined') {
-        if (!firebase.apps.length) {
-          firebase.initializeApp(FIREBASE_CONFIG);
-        }
-        db = firebase.database();
-        isFirebaseReady = true;
+// Function to immediately trigger music playback
+function attemptPlayMusic() {
+  if (!bgMusic) return;
+  
+  const playPromise = bgMusic.play();
+  if (playPromise !== undefined) {
+    playPromise.then(() => {
+      isMusicPlaying = true;
+      if (musicToggle) {
+        musicToggle.classList.add('playing');
+        musicToggle.classList.remove('paused');
       }
-    } catch (e) {
-      console.error('Firebase init error:', e);
-    }
-  }
-
-  function initEventListeners() {
-    if (btnStartGen) {
-      btnStartGen.addEventListener('click', start10SecondVerificationFlow);
-    }
-
-    if (btnCopyCode) {
-      btnCopyCode.addEventListener('click', copyKeyToClipboard);
-    }
-
-    if (btnCheckRefresh) {
-      btnCheckRefresh.addEventListener('click', () => {
-        checkExistingSession();
-        showToast('Session status verified! 🔄');
-      });
-    }
-  }
-
-  // ==========================================
-  // 3. SESSION & STRICT TIMER VERIFICATION (WITH LIVE ADMIN SYNC)
-  // ==========================================
-  let activeKeySafeName = null;
-
-  function listenToActiveKeyStatus(keyCode) {
-    if (activeKeySafeName && db) {
-      try { db.ref(`gx_licenses/${activeKeySafeName}`).off(); } catch (e) {}
-      activeKeySafeName = null;
-    }
-
-    if (!isFirebaseReady || !db || !keyCode) return;
-    const safeKey = keyCode.replace(/[.#$[\]]/g, '_');
-    activeKeySafeName = safeKey;
-
-    db.ref(`gx_licenses/${safeKey}`).on('value', (snapshot) => {
-      const val = snapshot.val();
-      const currentSaved = getStoredActiveKey();
-      if (currentSaved !== keyCode) return;
-
-      // If key was deleted by admin from database OR status changed to blocked/banned/expired
-      if (!val || val.status === 'blocked' || val.status === 'banned' || val.status === 'expired') {
-        console.log('Key deleted/blocked by admin in Firebase. Releasing web lock immediately.');
-        if (countdownInterval) clearInterval(countdownInterval);
-        clearAllStoredTrialKeys();
-        showToast('⚠️ Key was deleted/blocked in Admin Panel! You can now generate a new key.');
-        showReadySection();
+      if (musicStatusText) {
+        musicStatusText.textContent = 'VIP AUDIO ON';
       }
+    }).catch(() => {
+      // Browser blocked without first gesture - will auto-unlock on first pointer move/scroll
     });
   }
+}
 
-  function checkExistingSession() {
-    const savedKey = getStoredActiveKey();
-    const savedExpiry = parseInt(localStorage.getItem(STORAGE_KEY_EXPIRY) || localStorage.getItem('rpp_web_trial_expiry_ts') || '0', 10);
-    const now = Date.now();
+// Immediate attempt on script load
+attemptPlayMusic();
 
-    if (!savedKey) {
-      clearAllStoredTrialKeys();
-      showReadySection();
-      return;
+// Immediate attempt on DOM load and window load
+document.addEventListener('DOMContentLoaded', attemptPlayMusic);
+window.addEventListener('load', attemptPlayMusic);
+
+// Auto-trigger on any user arrival gestures (movement, hover, scroll, touch)
+const autoPlayTriggers = ['pointermove', 'mousemove', 'mouseenter', 'touchstart', 'scroll', 'keydown', 'click'];
+function autoPlayOnArrival() {
+  if (!isMusicPlaying && bgMusic) {
+    attemptPlayMusic();
+  }
+  // Once playing, remove these arrival triggers
+  if (isMusicPlaying) {
+    autoPlayTriggers.forEach(evt => window.removeEventListener(evt, autoPlayOnArrival));
+  }
+}
+
+autoPlayTriggers.forEach(evt => {
+  window.addEventListener(evt, autoPlayOnArrival, { passive: true });
+});
+
+// Manual Toggle handler (Play / Pause)
+function toggleMusic(e) {
+  if (e) e.stopPropagation();
+  if (!bgMusic) return;
+  initAudio();
+  
+  if (bgMusic.paused) {
+    bgMusic.play().then(() => {
+      isMusicPlaying = true;
+      musicToggle.classList.add('playing');
+      musicToggle.classList.remove('paused');
+      musicStatusText.textContent = 'VIP AUDIO ON';
+      playSound('click');
+    }).catch(() => {});
+  } else {
+    bgMusic.pause();
+    isMusicPlaying = false;
+    musicToggle.classList.remove('playing');
+    musicToggle.classList.add('paused');
+    musicStatusText.textContent = 'VIP AUDIO OFF';
+  }
+}
+
+if (musicToggle) {
+  musicToggle.addEventListener('click', toggleMusic);
+}
+
+// --- SOUND ENGINE (WEB AUDIO SYNTHESIZER FX) ---
+let audioCtx = null;
+
+function initAudio() {
+  if (!audioCtx) {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (AudioContext) {
+      audioCtx = new AudioContext();
     }
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+}
 
-    // Always verify with Firebase Realtime Database first!
-    if (isFirebaseReady && db) {
-      const safeKey = savedKey.replace(/[.#$[\]]/g, '_');
-      db.ref(`gx_licenses/${safeKey}`).once('value').then((snapshot) => {
-        const val = snapshot.val();
-        if (!val || val.status === 'blocked' || val.status === 'banned' || val.status === 'expired' || (val.expiryTimestamp && val.expiryTimestamp <= now)) {
-          console.log('Key not in database or blocked/expired. Clearing lock.');
-          clearAllStoredTrialKeys();
-          showReadySection();
-        } else {
-          const exp = val.expiryTimestamp || savedExpiry || (now + DURATION_1_5_HOURS_MS);
-          showActiveKeySection(savedKey, exp);
-        }
-      }).catch(() => {
-        if (savedExpiry > now) {
-          showActiveKeySection(savedKey, savedExpiry);
-        } else {
-          clearAllStoredTrialKeys();
-          showReadySection();
-        }
-      });
+function playSound(type) {
+  initAudio();
+  if (!audioCtx) return;
+
+  const now = audioCtx.currentTime;
+
+  if (type === 'click') {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(500, now);
+    osc.frequency.exponentialRampToValueAtTime(180, now + 0.08);
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + 0.08);
+  } else if (type === 'tick') {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, now);
+    osc.frequency.exponentialRampToValueAtTime(1320, now + 0.05);
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + 0.05);
+  } else if (type === 'unlock') {
+    // Crimson Fanfare chords
+    const freqs = [587.33, 739.99, 880.00, 1174.66]; // D5, F#5, A5, D6
+    freqs.forEach((f, idx) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(f, now + idx * 0.07);
+      gain.gain.setValueAtTime(0.15, now + idx * 0.07);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.6);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now + idx * 0.07);
+      osc.stop(now + idx * 0.07 + 0.65);
+    });
+  } else if (type === 'copy') {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(700, now);
+    osc.frequency.exponentialRampToValueAtTime(1500, now + 0.15);
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + 0.15);
+  }
+}
+
+// --- AMBIENT RED PARTICLES SYSTEM (BACKGROUND CANVAS) ---
+const bgCanvas = document.getElementById('bg-canvas');
+const bgCtx = bgCanvas.getContext('2d');
+let particles = [];
+
+function resizeBg() {
+  bgCanvas.width = window.innerWidth;
+  bgCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeBg);
+resizeBg();
+
+class RedEmber {
+  constructor() {
+    this.reset(true);
+  }
+  
+  reset(init = false) {
+    this.x = Math.random() * bgCanvas.width;
+    this.y = init ? Math.random() * bgCanvas.height : bgCanvas.height + 20;
+    this.size = Math.random() * 3 + 1;
+    this.speedY = -(Math.random() * 1.8 + 0.6);
+    this.speedX = (Math.random() - 0.5) * 1.2;
+    this.life = 0;
+    this.maxLife = Math.random() * 180 + 100;
+    this.alpha = 0;
+    this.color = ['#ff003c', '#ff1a4a', '#ff4d6d', '#ff0055', '#ffffff'][Math.floor(Math.random() * 5)];
+  }
+  
+  update() {
+    this.life++;
+    this.x += this.speedX + Math.sin(this.life * 0.05) * 0.4;
+    this.y += this.speedY;
+    
+    // Alpha fade in and out
+    if (this.life < 30) {
+      this.alpha = this.life / 30;
+    } else if (this.life > this.maxLife - 40) {
+      this.alpha = (this.maxLife - this.life) / 40;
     } else {
-      if (savedExpiry > now) {
-        showActiveKeySection(savedKey, savedExpiry);
-      } else {
-        clearAllStoredTrialKeys();
-        showReadySection();
-      }
+      this.alpha = 0.8;
+    }
+    
+    if (this.life >= this.maxLife || this.y < -20) {
+      this.reset();
     }
   }
+  
+  draw() {
+    bgCtx.save();
+    bgCtx.globalAlpha = Math.max(0, this.alpha * 0.7);
+    bgCtx.fillStyle = this.color;
+    bgCtx.shadowBlur = 10;
+    bgCtx.shadowColor = this.color;
+    bgCtx.beginPath();
+    bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    bgCtx.fill();
+    bgCtx.restore();
+  }
+}
 
-  function showReadySection() {
-    if (countdownInterval) clearInterval(countdownInterval);
-    if (activeKeySafeName && db) {
-      try { db.ref(`gx_licenses/${activeKeySafeName}`).off(); } catch (e) {}
-      activeKeySafeName = null;
+for (let i = 0; i < 55; i++) {
+  particles.push(new RedEmber());
+}
+
+function animateBackground() {
+  bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+  for (let p of particles) {
+    p.update();
+    p.draw();
+  }
+  requestAnimationFrame(animateBackground);
+}
+animateBackground();
+
+// --- 3D PERSPECTIVE TILT PHYSICS ---
+let targetTiltX = 0, targetTiltY = 0;
+let currentTiltX = 0, currentTiltY = 0;
+
+document.addEventListener('mousemove', (e) => {
+  const rect = cardWrapper.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+  
+  const deltaX = (e.clientX - centerX) / (window.innerWidth / 2);
+  const deltaY = (e.clientY - centerY) / (window.innerHeight / 2);
+  
+  targetTiltY = deltaX * 14; // Max 14 deg tilt
+  targetTiltX = -deltaY * 14;
+  
+  // Hologram glare position
+  const glareX = ((e.clientX - rect.left) / rect.width) * 100;
+  const glareY = ((e.clientY - rect.top) / rect.height) * 100;
+  card3d.style.setProperty('--mouse-x', `${glareX}%`);
+  card3d.style.setProperty('--mouse-y', `${glareY}%`);
+});
+
+// Mobile gyroscope tilt support
+if (window.DeviceOrientationEvent) {
+  window.addEventListener('deviceorientation', (e) => {
+    if (e.gamma !== null && e.beta !== null) {
+      targetTiltY = Math.min(Math.max(e.gamma / 3, -15), 15);
+      targetTiltX = Math.min(Math.max((e.beta - 45) / 3, -15), 15);
     }
-    stateReady.classList.remove('hidden');
-    stateProgress.classList.add('hidden');
-    stateActiveKey.classList.add('hidden');
-  }
+  });
+}
 
-  function showActiveKeySection(keyCode, expiryTimestamp) {
-    stateReady.classList.add('hidden');
-    stateProgress.classList.add('hidden');
-    stateActiveKey.classList.remove('hidden');
+function update3DTilt() {
+  currentTiltX += (targetTiltX - currentTiltX) * 0.1;
+  currentTiltY += (targetTiltY - currentTiltY) * 0.1;
+  
+  card3d.style.transform = `rotateX(${currentTiltX.toFixed(2)}deg) rotateY(${currentTiltY.toFixed(2)}deg)`;
+  requestAnimationFrame(update3DTilt);
+}
+update3DTilt();
 
-    if (activeKeyText) {
-      activeKeyText.textContent = keyCode;
+// Reset tilt on mouse leave
+document.addEventListener('mouseleave', () => {
+  targetTiltX = 0;
+  targetTiltY = 0;
+});
+
+// --- CIPHER SCRAMBLER EFFECT ---
+const CIPHER_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@!$%&*';
+let cipherInterval = null;
+
+function startCipherScramble() {
+  clearInterval(cipherInterval);
+  cipherInterval = setInterval(() => {
+    let scrambled = '';
+    for (let i = 0; i < 16; i++) {
+      scrambled += CIPHER_CHARS.charAt(Math.floor(Math.random() * CIPHER_CHARS.length));
     }
+    cipherScramble.textContent = scrambled;
+  }, 45);
+}
 
-    startRealtimeCountdown(expiryTimestamp, keyCode);
-    listenToActiveKeyStatus(keyCode);
-  }
+function stopCipherScramble() {
+  clearInterval(cipherInterval);
+}
 
-  // ==========================================
-  // 4. 10-SECOND REALTIME RADAR & MULTI-STEP CONSOLE
-  // ==========================================
-  function start10SecondVerificationFlow() {
-    // Strict Lock Check: Don't allow generation if already active
-    const savedExpiry = parseInt(localStorage.getItem(STORAGE_KEY_EXPIRY) || '0', 10);
-    if (savedExpiry > Date.now()) {
-      showToast('⚠️ You already have an active 1.5-Hour VIP Key!');
-      checkExistingSession();
-      return;
+// --- 5-SECOND KEY GENERATION WORKFLOW ---
+const STATUS_STAGES = [
+  { time: 0, text: 'Connecting to Crimson 2026 Core Server...' },
+  { time: 1000, text: 'Bypassing Quantum Security Node...' },
+  { time: 2000, text: 'Generating AES-512 VIP Hash...' },
+  { time: 3200, text: 'Injecting Lifetime License Pass...' },
+  { time: 4200, text: 'Finalizing Cryptographic Key...' }
+];
+
+let generationTimer = null;
+let lastTickSecond = 5;
+
+function startGenerating() {
+  playSound('click');
+  initAudio();
+  attemptPlayMusic();
+  
+  // Transition to Generating State
+  idleState.classList.remove('active-state');
+  idleState.classList.add('hidden');
+  revealedState.classList.add('hidden');
+  revealedState.classList.remove('active-state');
+  
+  generatingState.classList.remove('hidden');
+  generatingState.classList.add('active-state');
+  
+  // Reset Progress Elements
+  const circumference = 2 * Math.PI * 50; // r=50 -> ~314.159
+  progressRingCircle.style.strokeDasharray = `${circumference}`;
+  progressRingCircle.style.strokeDashoffset = '0';
+  linearProgressBar.style.width = '0%';
+  countdownSeconds.textContent = '5';
+  lastTickSecond = 5;
+  
+  startCipherScramble();
+  
+  const startTime = Date.now();
+  
+  if (generationTimer) clearInterval(generationTimer);
+  
+  generationTimer = setInterval(() => {
+    const elapsed = Date.now() - startTime;
+    const remainingTime = Math.max(0, COUNTDOWN_DURATION - elapsed);
+    const progress = Math.min(1, elapsed / COUNTDOWN_DURATION);
+    
+    // Update Radial Circle Offset
+    const offset = circumference * progress;
+    progressRingCircle.style.strokeDashoffset = `${offset}`;
+    
+    // Update Linear Bar
+    linearProgressBar.style.width = `${(progress * 100).toFixed(1)}%`;
+    
+    // Update Countdown Seconds (5, 4, 3, 2, 1)
+    const currentSec = Math.ceil(remainingTime / 1000);
+    if (currentSec !== lastTickSecond && currentSec > 0) {
+      countdownSeconds.textContent = currentSec;
+      lastTickSecond = currentSec;
+      playSound('tick');
     }
-
-    stateReady.classList.add('hidden');
-    stateProgress.classList.remove('hidden');
-    stateActiveKey.classList.add('hidden');
-
-    let secondsLeft = 10;
-    cyberProgressBar.style.width = '0%';
-    countdownSecNum.textContent = secondsLeft;
-
-    const consoleSteps = [
-      { sec: 10, title: 'Scanning Anti-Abuse Gateway...', log: 'Probing Cloud Firewall & Anti-Abuse Gateway...' },
-      { sec: 8, title: 'Fingerprinting Device Entropy...', log: 'Performing IP Geolocation & Threat Scoring (0.0ms)...' },
-      { sec: 6, title: 'Validating Hardware Signatures...', log: 'Validating Hardware Fingerprint & Browser Entropy...' },
-      { sec: 4, title: 'Routing Private VIP Node...', log: 'Routing to Low-Latency Cloud Proxy Cluster...' },
-      { sec: 2, title: 'Encrypting VIP Token...', log: 'Generating Encrypted Single-Device Token [WEB-XXXX]...' },
-      { sec: 0, title: 'Finalizing Database Sync...', log: 'Committing License Hash to Realtime Database...' }
-    ];
-
-    if (progressInterval) clearInterval(progressInterval);
-
-    // Initial log
-    addTerminalLog(consoleSteps[0].log);
-
-    progressInterval = setInterval(() => {
-      secondsLeft--;
-
-      const percent = Math.round(((10 - secondsLeft) / 10) * 100);
-      cyberProgressBar.style.width = percent + '%';
-      countdownSecNum.textContent = secondsLeft;
-
-      for (const step of consoleSteps) {
-        if (secondsLeft === step.sec) {
-          scanTitle.textContent = step.title;
-          addTerminalLog(step.log);
-          break;
-        }
-      }
-
-      if (secondsLeft <= 0) {
-        clearInterval(progressInterval);
-        setTimeout(finalizeAndCommitKey, 400);
-      }
-    }, 1000);
-  }
-
-  function addTerminalLog(msg) {
-    if (!currentLogText) return;
-    currentLogText.textContent = msg;
-  }
-
-  // ==========================================
-  // 5. GENERATE KEY WITH 'WEB-' PREFIX & SAVE
-  // ==========================================
-  async function finalizeAndCommitKey() {
-    const keyCode = generateWebVIPKey();
-    const now = Date.now();
-    const expiryTimestamp = now + DURATION_1_5_HOURS_MS;
-
-    const licenseObject = {
-      key: keyCode,
-      status: 'unused',
-      createdAt: now,
-      expiryTimestamp: expiryTimestamp,
-      durationHours: 1.5,
-      durationDays: 0.0625,
-      durationLabel: '1.5 Hours Trial',
-      hwid: null,
-      boundHwid: 'null',
-      maxDevices: 1,
-      max_devices: 1,
-      is_unlimited_devices: false,
-      clientNote: 'Web Trial Generated',
-      notes: 'Web 1.5H Trial (Auto-Generated)',
-      generatedFrom: 'web_portal',
-      features: {
-        drag90: true,
-        drag60: true,
-        bypass: true
-      }
-    };
-
-    // 1. Save locally for strict 1.5-hour lock
-    localStorage.setItem(STORAGE_KEY_ACTIVE_KEY, keyCode);
-    localStorage.setItem(STORAGE_KEY_EXPIRY, expiryTimestamp.toString());
-    localStorage.setItem(STORAGE_KEY_CREATED, now.toString());
-
-    // 2. Commit live to Firebase Realtime Database
-    if (isFirebaseReady && db) {
-      try {
-        const safeKey = keyCode.replace(/[.#$[\]]/g, '_');
-        await db.ref(`gx_licenses/${safeKey}`).set(licenseObject);
-        console.log('Key successfully committed to Firebase:', safeKey);
-      } catch (err) {
-        console.error('Firebase commit error:', err);
+    
+    // Update Dynamic Status Messages
+    for (let i = STATUS_STAGES.length - 1; i >= 0; i--) {
+      if (elapsed >= STATUS_STAGES[i].time) {
+        statusMessage.textContent = STATUS_STAGES[i].text;
+        break;
       }
     }
-
-    // 3. Display Active Key & Countdown
-    showActiveKeySection(keyCode, expiryTimestamp);
-    showToast('🎉 1.5-Hour VIP Key Generated & Active!');
-  }
-
-  function generateWebVIPKey() {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    const randSeg = (len = 4) => {
-      let str = '';
-      for (let i = 0; i < len; i++) {
-        str += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return str;
-    };
-    return `WEB-${randSeg(4)}-${randSeg(4)}-${randSeg(4)}`;
-  }
-
-  // ==========================================
-  // 6. REALTIME COUNTDOWN & AUTO-CLEANUP ON EXPIRY
-  // ==========================================
-  function startRealtimeCountdown(expiryTimestamp, keyCode) {
-    if (countdownInterval) clearInterval(countdownInterval);
-
-    const updateTimer = () => {
-      const now = Date.now();
-      const diffMs = expiryTimestamp - now;
-
-      if (diffMs <= 0) {
-        clearInterval(countdownInterval);
-        liveTimerDigits.textContent = '00:00:00';
-        showToast('⚠️ Your 1.5-Hour Trial has expired! Cleaned from database.');
-
-        // Clean expired key from Firebase & Local Storage
-        cleanExpiredKeyFromDatabase(keyCode);
-        localStorage.removeItem(STORAGE_KEY_ACTIVE_KEY);
-        localStorage.removeItem(STORAGE_KEY_EXPIRY);
-        localStorage.removeItem(STORAGE_KEY_CREATED);
-
-        setTimeout(showReadySection, 2500);
-        return;
-      }
-
-      const totalSeconds = Math.floor(diffMs / 1000);
-      const hours = Math.floor(totalSeconds / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-
-      const pad = (n) => String(n).padStart(2, '0');
-      liveTimerDigits.textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
-    };
-
-    updateTimer();
-    countdownInterval = setInterval(updateTimer, 1000);
-  }
-
-  function cleanExpiredKeyFromDatabase(key) {
-    if (!key) return;
-    if (isFirebaseReady && db) {
-      try {
-        const safeKey = key.replace(/[.#$[\]]/g, '_');
-        db.ref(`gx_licenses/${safeKey}`).remove();
-        console.log('Expired key cleaned from Firebase:', safeKey);
-      } catch (ignored) {}
+    
+    // Completed 5 Seconds
+    if (elapsed >= COUNTDOWN_DURATION) {
+      clearInterval(generationTimer);
+      stopCipherScramble();
+      revealKey();
     }
-  }
+  }, 30);
+}
 
-  // ==========================================
-  // 7. COPY TO CLIPBOARD
-  // ==========================================
-  function copyKeyToClipboard() {
-    const key = activeKeyText ? activeKeyText.textContent.trim() : '';
-    if (!key || key.includes('XXXX')) return;
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(key).then(() => {
-        showToast('📋 Key copied to clipboard!');
-      }).catch(() => {
-        fallbackCopy(key);
-      });
+// Reveal Key State
+function revealKey() {
+  playSound('unlock');
+  
+  generatingState.classList.remove('active-state');
+  generatingState.classList.add('hidden');
+  
+  revealedState.classList.remove('hidden');
+  revealedState.classList.add('active-state');
+  
+  // Character laser glitch reveal of the key
+  finalKeyText.textContent = '';
+  let idx = 0;
+  const revealInterval = setInterval(() => {
+    if (idx < VIP_KEY.length) {
+      finalKeyText.textContent += VIP_KEY[idx];
+      idx++;
     } else {
-      fallbackCopy(key);
+      clearInterval(revealInterval);
     }
-  }
+  }, 40);
+  
+  // Reset copy button state
+  copyBtn.classList.remove('copied');
+  copyIcon.classList.remove('hidden');
+  checkIcon.classList.add('hidden');
+  copyBtnText.textContent = 'COPY KEY';
+}
 
-  function fallbackCopy(text) {
-    const input = document.createElement('input');
-    input.value = text;
-    document.body.appendChild(input);
-    input.select();
+// --- COPY TO CLIPBOARD HANDLER ---
+function copyKeyToClipboard() {
+  playSound('copy');
+  
+  // Use modern Clipboard API with fallback
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(VIP_KEY).then(() => {
+      handleCopySuccess();
+    }).catch(() => {
+      fallbackCopy(VIP_KEY);
+    });
+  } else {
+    fallbackCopy(VIP_KEY);
+  }
+}
+
+function fallbackCopy(text) {
+  const tempInput = document.createElement('input');
+  tempInput.value = text;
+  document.body.appendChild(tempInput);
+  tempInput.select();
+  try {
     document.execCommand('copy');
-    document.body.removeChild(input);
-    showToast('📋 Key copied to clipboard!');
+    handleCopySuccess();
+  } catch (err) {
+    console.error('Copy fallback failed', err);
   }
+  document.body.removeChild(tempInput);
+}
 
-  function showToast(msg) {
-    if (!cyberToast || !toastMsgText) return;
-    toastMsgText.textContent = msg;
-    cyberToast.classList.add('show');
-    setTimeout(() => {
-      cyberToast.classList.remove('show');
-    }, 3200);
-  }
+let toastTimeout = null;
 
-  function initLiveUserCounter() {
-    let count = 2840 + Math.floor(Math.random() * 50);
-    if (liveUserCounter) {
-      liveUserCounter.textContent = `🟢 ${count.toLocaleString()} Active Proxies`;
-    }
+function handleCopySuccess() {
+  // Update button visual
+  copyBtn.classList.add('copied');
+  copyIcon.classList.add('hidden');
+  checkIcon.classList.remove('hidden');
+  copyBtnText.textContent = 'COPIED! ✓';
+  
+  // Show toast notification
+  toast.classList.remove('hidden');
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => {
+    toast.classList.add('hidden');
+  }, 3500);
+}
 
-    setInterval(() => {
-      const delta = Math.floor(Math.random() * 9) - 4;
-      count = Math.max(2500, count + delta);
-      if (liveUserCounter) {
-        liveUserCounter.textContent = `🟢 ${count.toLocaleString()} Active Proxies`;
-      }
-    }, 4500);
-  }
+// Regenerate Key Handler
+function handleRegenerate() {
+  playSound('click');
+  startGenerating();
+}
 
-  // ==========================================
-  // 8. INTERACTIVE CYBER CANVAS PARTICLES
-  // ==========================================
-  function initCyberCanvas() {
-    const canvas = document.getElementById('cyber-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-
-    let width, height;
-    let particles = [];
-
-    function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    const particleCount = Math.min(60, Math.floor(window.innerWidth / 20));
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.8,
-        vy: (Math.random() - 0.5) * 0.8,
-        size: Math.random() * 2 + 1,
-        color: Math.random() > 0.4 ? 'rgba(255, 107, 0, ' : 'rgba(56, 189, 248, '
-      });
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, width, height);
-
-      // Connect near particles
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 110) {
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(255, 107, 0, ${0.15 * (1 - dist / 110)})`;
-            ctx.lineWidth = 0.8;
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-
-      // Draw and move particles
-      for (const p of particles) {
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (p.x < 0) p.x = width;
-        if (p.x > width) p.x = 0;
-        if (p.y < 0) p.y = height;
-        if (p.y > height) p.y = 0;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = p.color + '0.6)';
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = '#FF6B00';
-        ctx.fill();
-        ctx.shadowBlur = 0;
-      }
-
-      requestAnimationFrame(animate);
-    }
-    animate();
-  }
-
-})();
+// --- ATTACH EVENT LISTENERS ---
+generateBtn.addEventListener('click', startGenerating);
+copyBtn.addEventListener('click', copyKeyToClipboard);
+regenerateBtn.addEventListener('click', handleRegenerate);
